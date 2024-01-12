@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import {Link} from 'react-router-dom';
 
 import {
   Form,
@@ -32,10 +32,8 @@ const SignupForm = () => {
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof SignupValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof SignupValidation>) {
+    // const newUser=await createUserAccount(values);
   }
   return (
   <Form {...form}>
@@ -43,7 +41,7 @@ const SignupForm = () => {
       <img src='/assets/images/binge-logo-croped-light.png' className="w-40 h-16 pb-2"/>
       
       <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12"> Create a new account</h2>
-      <p className="text-light-3 small-medium md:base-regular mt-2">To use Bingegram enter your details</p>
+      <p className="text-light-3 small-medium md:base-regular mt-2">To use Bingegram, please enter your details</p>
       
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
         <FormField
@@ -56,7 +54,7 @@ const SignupForm = () => {
                 <Input type='text' className="shad-input" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -72,7 +70,7 @@ const SignupForm = () => {
                 <Input type='text' className="shad-input" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -88,7 +86,7 @@ const SignupForm = () => {
                 <Input type='email' className="shad-input" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -104,7 +102,7 @@ const SignupForm = () => {
                 <Input type='password' className="shad-input" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -117,6 +115,11 @@ const SignupForm = () => {
             </div>
           ):"Sign up"}
         </Button>
+
+        <p className="text-small-regular text-light-2 text-center mt-2">
+          Already have an account?
+          <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1"> Log in</Link>
+        </p>
       </form>
     </div>
   </Form>
