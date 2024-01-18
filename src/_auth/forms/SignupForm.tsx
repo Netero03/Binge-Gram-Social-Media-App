@@ -56,8 +56,7 @@ const SignupForm = () => {
     if(!session){
       return toast({
         title: "Sign up failed. Please try again",
-        description: "Friday, February 10, 2023 at 5:57 PM",
-      })
+        description: "Friday, February 10, 2023 at 5:57 PM",})
     }
   }
   return (
