@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/lib/aapwrite/api";
 import { IContextType, IUser } from "@/types";
 import { createContext,useContext,useEffect,useState } from "react"
 
@@ -39,6 +40,12 @@ const AuthProvider = ({children}:{children:React.ReactNode}) => {
   const checkAuthUser=async()=>{
     try {
       const currentAccount=await getCurrentUser();
+
+      if(currentAccount){
+        setUser({
+          id:currentAccount
+        })
+      }
     } catch (error) {
       console.log(error);
       return false;

@@ -73,6 +73,10 @@ export async function getCurrentUser() {
             appwriteConfig.userCollectionId,
             [Query.equal('account',currentAccount.$id)]
         )
+
+        if(!currentUser) throw Error;
+
+        return currentUser.documents[0];
     } catch (error) {
         console.log(error)
     }
