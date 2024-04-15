@@ -1,5 +1,5 @@
 import { useUserContext } from '@/context/AuthContext';
-import { formatDateString } from '@/lib/utils';
+import { multiFormatDateString } from '@/lib/utils';
 import { Models } from 'appwrite';
 import { Link } from 'react-router-dom';
 import PostStats from './PostStats';
@@ -17,19 +17,20 @@ const PostCard = ({ post }: PostCardProps) => {
         <div className='post-card'>
             <div className='flex-between'>
                 <div className='flex items-center gap-3'>
-                    <img
-                        src={post?.creator?.imageUrl || '/assets/icons/profile-placeholder.svg'}
-                        alt='creator'
-                        className='rounded-full w-12 lg:h-12'
-                    />
-                    <Link to={`/profile/${post.creator.$id}`}></Link>
+                    <Link to={`/profile/${post.creator.$id}`}>
+                        <img
+                            src={post?.creator?.imageUrl || '/assets/icons/profile-placeholder.svg'}
+                            alt='creator'
+                            className='rounded-full w-12 lg:h-12'
+                        />
+                    </Link>
                     <div className='flex flex-col'>
                         <p className='base-medium lg:body-bold text-light-1'>
                             {post.creator.name}
                         </p>
                         <div className='flex-center gap-2 text-light-3'>
                             <p className='subtile-semibold lg:small-regular'>
-                                {formatDateString(post.$createdAt)}
+                                {multiFormatDateString(post.$createdAt)}
                             </p>
                             -
                             <p className='subtile-semibold lg:small-regular'>
@@ -54,10 +55,10 @@ const PostCard = ({ post }: PostCardProps) => {
                         ))}
                     </ul>
                 </div>
-                <img 
-                src={post.imageUrl || '/asset/icons/profile-placeholder.svg'}
-                className='post-card_img'
-                alt='post image'
+                <img
+                    src={post.imageUrl || '/asset/icons/profile-placeholder.svg'}
+                    className='post-card_img'
+                    alt='post image'
                 />
             </Link>
             <PostStats post={post} userId={user.id} />
