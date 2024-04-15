@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/lib/aapwrite/api";
-import { IContextType, IUser } from "@/types";
+import { IUser } from "@/types";
 import { createContext,useContext,useEffect,useState } from "react"
 import { useNavigate } from "react-router-dom";
 
@@ -68,10 +68,11 @@ const navigate=useNavigate();
 
   useEffect(()=>{
     if(
-      localStorage.getItem('cookieFallback')==='[]' || 
-      localStorage.getItem('cookieFallback')===null
+      localStorage.getItem('cookieFallback')===null ||
+      localStorage.getItem('cookieFallback')==='[]'
       )navigate('/sign-in')
     
+      checkAuthUser();
   },[]);
 
   const value={
@@ -90,4 +91,6 @@ const navigate=useNavigate();
   )
 }
 
-export default AuthContext
+export default AuthProvider;
+
+export const useUserContext=()=>useContext(AuthContext);

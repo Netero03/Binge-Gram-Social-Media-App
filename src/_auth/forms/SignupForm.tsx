@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import { useToast } from "@/components/ui/use-toast"
 
 
@@ -19,14 +19,17 @@ import { SignupValidation } from "@/lib/validation";
 import { z } from "zod";
 import Loader from "@/components/ui/shared/Loader";
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations";
+import { useUserContext } from "@/context/AuthContext";
 
  
 const SignupForm = () => {
   const { toast } = useToast();
+  const {checkAuthUser, isLoading:isUserLoading}= useUserContext();
+  const navigate=useNavigate();
 
-  const{mutateAsync: createUserAccount, isLoading: isCreatingUser} = useCreateUserAccount();
+  const{mutateAsync: createUserAccount, isPending: isCreatingAccount} = useCreateUserAccount();
 
-  const{mutateAsync: signInAccount, isLoading: isSigningIn} = useSignInAccount();
+  const{mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
  
 
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -57,6 +60,16 @@ const SignupForm = () => {
       return toast({
         title: "Sign up failed. Please try again",
         description: "Friday, February 10, 2023 at 5:57 PM",})
+    }
+
+    const isLoggedIn = await checkAuthUser();
+
+    if(isLoggedIn){
+      form.reset();
+
+      navigate('/')
+    }else{
+      return toast({title:'Sign in failed. Please try again.'})
     }
   }
   return (
@@ -132,14 +145,20 @@ const SignupForm = () => {
             </FormItem>
           )}
           />
-        <Button type="submit" className="shad-button_primary">
-          {isCreatingUser ? (
-            <div className="flex-center gap-2">
-              <Loader/> Loading...
-            </div>
-          ):"Sign up"}
-        </Button>
-
+          <div className="relative inline-flex  group flex justify-center items-center w-36 left-32">
+              <div
+                  className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-md group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt">
+              </div>
+              
+              <Button type="submit" className="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
+                {isCreatingAccount ? (
+                  <div className="flex-center gap-2 ">
+                    <Loader/> Loading...
+                  </div>
+              ):"Sign up"}
+            </Button>
+          </div>
+          
         <p className="text-small-regular text-light-2 text-center mt-2">
           Already have an account?
           <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1"> Log in</Link>
